@@ -48,12 +48,20 @@ public class MainActivity extends AppCompatActivity {
      * @param v Button that was clicked.
      */
     public void onClickOpenAddressButton(View v) {
-        // TODO (5) Store an address in a String
+        // COMPLETED (5) Store an address in a String
+        String theAddress = "Jakarta";
 
-        // TODO (6) Use Uri.Builder with the appropriate scheme and query to form the Uri for the address
+        // COMPLETED (6) Use Uri.Builder with the appropriate scheme and query to form the Uri for the address
+        Uri.Builder theBuilder = new Uri.Builder();
+        theBuilder.scheme("geo")
+            .path("0,0")
+            .query(theAddress);
 
-        // TODO (7) Replace the Toast with a call to showMap, passing in the Uri from the previous step
-        Toast.makeText(this, "TODO: Open a map when this button is clicked", Toast.LENGTH_SHORT).show();
+        Uri theUri = theBuilder.build();
+
+        // COMPLETED (7) Replace the Toast with a call to showMap, passing in the Uri from the previous step
+        //Toast.makeText(this, "TODOlist: Open a map when this button is clicked", Toast.LENGTH_SHORT).show();
+        showMap(theUri);
     }
 
     /**
@@ -112,13 +120,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    // TODO (1) Create a method called showMap with a Uri as the single parameter
-    // Do steps 2 - 4 within the showMap method
-        // TODO (2) Create an Intent with action type, Intent.ACTION_VIEW
+    // COMPLETED (1) Create a method called showMap with a Uri as the single parameter
+    void showMap(Uri param) {
+        // Do steps 2 - 4 within the showMap method
+        // COMPLETED (2) Create an Intent with action type, Intent.ACTION_VIEW
+        Intent i = new Intent();
+        i.setAction(Intent.ACTION_VIEW);
 
-        // TODO (3) Set the data of the Intent to the Uri passed into this method
+        // COMPLETED (3) Set the data of the Intent to the Uri passed into this method
+        i.setData(param);
 
-        // TODO (4) Verify that this Intent can be launched and then call startActivity
+        // COMPLETED (4) Verify that this Intent can be launched and then call startActivity
+        if(i.resolveActivity(getPackageManager()) != null)
+            startActivity(i);
+    }
 
 
 }
