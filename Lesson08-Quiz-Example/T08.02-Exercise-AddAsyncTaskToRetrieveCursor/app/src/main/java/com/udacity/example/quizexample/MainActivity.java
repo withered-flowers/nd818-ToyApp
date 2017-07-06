@@ -16,10 +16,26 @@
 
 package com.udacity.example.quizexample;
 
+import android.content.ContentResolver;
+import android.database.ContentObservable;
+import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.udacity.example.droidtermsprovider.DroidTermsExampleContract;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.annotations.NonNull;
 
 /**
  * Gets the data from the ContentProvider and shows a series of flash cards.
@@ -30,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
     // The current state of the app
     private int mCurrentState;
 
-    // TODO (3) Create an instance variable storing a Cursor called mData
+    // COMPLETED (3) Create an instance variable storing a Cursor called mData
+    private Cursor mData;
     private Button mButton;
 
     // This state is when the word definition is hidden and clicking the button will therefore
@@ -50,7 +67,8 @@ public class MainActivity extends AppCompatActivity {
         // Get the views
         mButton = (Button) findViewById(R.id.button_next);
 
-        // TODO (5) Create and execute your AsyncTask here
+        // COMPLETED (5) Create and execute your AsyncTask here
+        new CursorFetchTask().execute();
     }
 
     /**
@@ -90,9 +108,23 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // TODO (1) Create AsyncTask with the following generic types <Void, Void, Cursor>
-    // TODO (2) In the doInBackground method, write the code to access the DroidTermsExample
+    // COMPLETED (1) Create AsyncTask with the following generic types <Void, Void, Cursor>
+    // COMPLETED (2) In the doInBackground method, write the code to access the DroidTermsExample
     // provider and return the Cursor object
-    // TODO (4) In the onPostExecute method, store the Cursor object in mData
+    // COMPLETED (4) In the onPostExecute method, store the Cursor object in mData
+    private class CursorFetchTask extends AsyncTask<Void, Void, Cursor> {
+        @Override
+        protected Cursor doInBackground(Void... params) {
+            ContentResolver resolver = getContentResolver();
+
+            Cursor c = resolver.query(DroidTermsExampleContract.CONTENT_URI, null, null, null, null);
+            return c;
+        }
+
+        @Override
+        protected void onPostExecute(Cursor cursor) {
+            mData = cursor;
+        }
+    }
 
 }
